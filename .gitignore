@@ -49,5 +49,5 @@ crashlytics-build.properties
 fabric.properties
 
 
-build\classes\main\me\springroll\bot\Bot.class
-src\main\java\me\springroll\bot\Bot.java
+build/classes/main/me/springroll/bot/Bot.class
+src/main/java/me/springroll/bot/Bot.java
