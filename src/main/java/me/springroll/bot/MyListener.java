@@ -35,24 +35,25 @@ public class MyListener extends ListenerAdapter{
         if(message.getChannelType()== ChannelType.PRIVATE){
             MsgChannel = "DirectMessage-";
         }else if(message.getChannelType()==ChannelType.GROUP){
-            MsgChannel =
+            MsgChannel = "Group-";
         }else if(message.getChannelType()==ChannelType.TEXT){
 
         }else{
 
         }
-        if(new File("Logs\\"+message.getGroup().toString()+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").exists() ){
+        if(new File("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").exists() && message.getChannelType()==ChannelType.TEXT ){
            //do nothing
         }else{
             try{
-            new File("Logs\\"+message.getGroup().toString()+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").createNewFile();
-                System.out.println("Logs\\"+message.getGroup().toString()+channel.getName()+"_"+dateFormat.format(dateNow)+".txt");
+                boolean temp = new File("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").createNewFile();
+                System.out.println("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt");
+                System.out.println(temp);
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
         try{
-            PrintWriter FWriter = new PrintWriter(new FileWriter("Logs\\"+message.getGroup().toString()+channel.getName()+"_"+dateFormat.format(dateNow)+".txt",true));
+            PrintWriter FWriter = new PrintWriter(new FileWriter("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt",true));
             FWriter.println(message.getAuthor().toString().substring(2)+": "+message.getCreationTime().toString().substring(0,10)+" "+message.getCreationTime().toString().substring(10)+": \""+content+"\"");
             FWriter.flush();
             FWriter.close();
@@ -63,11 +64,11 @@ public class MyListener extends ListenerAdapter{
         if(event.getAuthor().isBot() || !(event.getAuthor().getId().equals("118208118629990403"))) return;
 
 
-        if(content.startsWith("!")){
+        if(content.startsWith("<")){
 
             channel.deleteMessageById(msgID).queue();
 
-            if(content.equals("!emotelist")){
+            if(content.equals("<emotelist")){
                 try{
                     StringBuilder res = new StringBuilder();
                     Arrays.asList(new File("res//").listFiles()).forEach(file ->
@@ -136,12 +137,10 @@ public class MyListener extends ListenerAdapter{
             }
 
             if(new File("res\\" + content.substring(1, content.length()).toLowerCase()+".png").exists()) {
-                try {
+
                     channel.sendFile(new File("res\\" + content.substring(1, content.length()).toLowerCase() + ".png"), null).queue();
-                } catch (IOException e) {
-                        e.printStackTrace();
                         channel.sendMessage("```IOException error, check console for more information```");
-                }
+
             }
         }
 

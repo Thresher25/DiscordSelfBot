@@ -13,7 +13,7 @@ shadowJar {
 mainClassName = 'me.springroll.bot.Bot'
 
 version '1.0'
-def jdaVersion = '3.0.0_183'
+def jdaVersion = '3.3.1_284'
 
 sourceCompatibility = 1.8
 
