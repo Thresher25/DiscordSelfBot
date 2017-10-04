@@ -41,6 +41,7 @@ public class MyListener extends ListenerAdapter{
         }else{
 
         }
+        //TODO stop making the program assume everything is in a Guild channel, the bot doesnt work for groups and DMs due to this
         if(new File("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").exists() && message.getChannelType()==ChannelType.TEXT ){
            //do nothing
         }else{
@@ -147,5 +148,3 @@ public class MyListener extends ListenerAdapter{
     }
 
 }
-
-/**/

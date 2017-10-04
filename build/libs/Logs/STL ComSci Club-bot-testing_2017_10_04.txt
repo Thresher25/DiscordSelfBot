@@ -216,3 +216,28 @@ Springroll(118208118629990403): 2017-10-04 T04:57:06.972Z: "sounds like you have
 Springroll(118208118629990403): 2017-10-04 T04:57:06.972Z: "sounds like you have some fixing to do"
 RaidAndFade(120308435639074816): 2017-10-04 T04:57:49.595Z: "yeah"
 RaidAndFade(120308435639074816): 2017-10-04 T04:57:49.595Z: "yeah"
+Springroll(118208118629990403): 2017-10-04 T05:08:21.787Z: "lmk if you ever fix it"
+RaidAndFade(120308435639074816): 2017-10-04 T05:09:16.282Z: "!exec ```java
+public class main{
+public static void main(String... args){
+System.out.println(7 % 10);
+}
+}
+```"
+Pessimus Base(364119345938563085): 2017-10-04 T05:09:16.572Z: "Please wait while your code executes"
+RaidAndFade(120308435639074816): 2017-10-04 T05:09:22.734Z: "theres your fix for now"
+Springroll(118208118629990403): 2017-10-04 T05:14:09.964Z: "dank"
+Springroll(118208118629990403): 2017-10-04 T14:18:23.426Z: ">blobw"
+Springroll(118208118629990403): 2017-10-04 T14:18:58.479Z: ">emotelist"
+Springroll(118208118629990403): 2017-10-04 T14:19:02.502Z: "<emotelist"
+Springroll(118208118629990403): 2017-10-04 T14:19:02.939Z: "Emote List: 2think, autism, beskeptical, bhinking, blobangry, blobawkward, blobaww, blobconsider, blobfairy, bloblickdog, bloblildevil, blobnazi, blobnom, blobowo, blobpats, blobstab, blobsuicide, blobthinkingdown, blobthonkang, blobupset, blobupsidedown, blobw, bye, chromo, deceit, doubt, eyesthinking, feelsbadman, feelsdabman, feelsgoodman, feelsokhandman, feelsokman, feelspepoman, gitgud, hhhhm, lenny, linux, liriksmart, looksgoodman, lul, mokawewleft, monkag1ga, monkagiga, monkas, multmonkas, okthink, osu, osuheart, pepegun, pepos, pepothink, pope, reee, rekt, spongerage, thicc, thinkang, thinkdrops, thinkernet, thinkfruit, Thinkgif, thinkhand, thinkingeggplant, thinkingfastblob, thinksmirk, thonk, thonkang, thonkangbaby, thonker, thonkeyes, thonkeying, thought, triggered, wank, xd, xding"
+Springroll(118208118629990403): 2017-10-04 T14:19:39.198Z: "<doubt"
+Springroll(118208118629990403): 2017-10-04 T14:19:39.630Z: ""
+Springroll(118208118629990403): 2017-10-04 T14:19:45.737Z: "<deceit"
+Springroll(118208118629990403): 2017-10-04 T14:19:46.393Z: ""
+Springroll(118208118629990403): 2017-10-04 T14:19:50.560Z: "hmm"
+Springroll(118208118629990403): 2017-10-04 T14:42:29.894Z: ">pepos"
+Springroll(118208118629990403): 2017-10-04 T14:42:47.286Z: "<pepos"
+Springroll(118208118629990403): 2017-10-04 T14:42:47.629Z: ""
+Springroll(118208118629990403): 2017-10-04 T19:26:41.823Z: "<hhhhm"
+Springroll(118208118629990403): 2017-10-04 T19:26:42.047Z: ""
