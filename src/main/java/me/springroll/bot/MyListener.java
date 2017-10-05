@@ -26,44 +26,14 @@ public class MyListener extends ListenerAdapter{
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){
-    LocalDate dateNow = LocalDate.now();
         Message message = event.getMessage();
         String content = message.getRawContent();
         long msgID = message.getIdLong();
         MessageChannel channel = event.getChannel();
-        String MsgChannel = "";
-        if(message.getChannelType()== ChannelType.PRIVATE){
-            MsgChannel = "DirectMessage-";
-        }else if(message.getChannelType()==ChannelType.GROUP){
-            MsgChannel = "Group-";
-        }else if(message.getChannelType()==ChannelType.TEXT){
 
-        }else{
-
-        }
-        //TODO stop making the program assume everything is in a Guild channel, the bot doesnt work for groups and DMs due to this
-        if(new File("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").exists() && message.getChannelType()==ChannelType.TEXT ){
-           //do nothing
-        }else{
-            try{
-                boolean temp = new File("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt").createNewFile();
-                System.out.println("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt");
-                System.out.println(temp);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        try{
-            PrintWriter FWriter = new PrintWriter(new FileWriter("Logs\\"+message.getGuild().getName()+"-"+channel.getName()+"_"+dateFormat.format(dateNow)+".txt",true));
-            FWriter.println(message.getAuthor().toString().substring(2)+": "+message.getCreationTime().toString().substring(0,10)+" "+message.getCreationTime().toString().substring(10)+": \""+content+"\"");
-            FWriter.flush();
-            FWriter.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        checkLogFile(message,channel);
 
         if(event.getAuthor().isBot() || !(event.getAuthor().getId().equals("118208118629990403"))) return;
-
 
         if(content.startsWith("<")){
 
@@ -145,6 +115,44 @@ public class MyListener extends ListenerAdapter{
             }
         }
 
+    }
+
+    public void checkLogFile(Message m, MessageChannel c){
+        LocalDate dateNow = LocalDate.now();
+        String filePath = "";
+        if(m.getChannelType()== ChannelType.PRIVATE){
+            filePath = "Logs\\"+m.getPrivateChannel().getName()+"-"+dateFormat.format(dateNow)+".txt";
+        }else if(m.getChannelType()==ChannelType.GROUP){
+            if(m.getGroup().getName()==null){
+                filePath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")-"+dateFormat.format(dateNow)+".txt";
+            }else {
+                filePath = "Logs\\" +c.getName() + "-" + dateFormat.format(dateNow) + ".txt";
+            }
+        }else if(m.getChannelType()==ChannelType.TEXT){
+            filePath = "Logs\\"+m.getGuild().getName()+"_"+c.getName()+"-"+dateFormat.format(dateNow)+".txt";
+        }else{
+            System.out.println("SelfBot Machine Broke");
+        }
+
+        if(!new File(filePath).exists()){
+            try{
+                if(new File(filePath).createNewFile()){
+                    System.out.println("Successfully created log file: "+filePath);
+                }else{
+                    System.out.println("Failed to create log file: "+filePath);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        try{
+            PrintWriter FWriter = new PrintWriter(new FileWriter(filePath,true));
+            FWriter.println(m.getAuthor().toString().substring(2)+": "+m.getCreationTime().toString().substring(0,10)+" "+m.getCreationTime().toString().substring(10)+": \""+m.getContent()+"\"");
+            FWriter.flush();
+            FWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }
