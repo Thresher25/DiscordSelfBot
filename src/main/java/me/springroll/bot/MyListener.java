@@ -35,11 +35,11 @@ public class MyListener extends ListenerAdapter{
 
         if(event.getAuthor().isBot() || !(event.getAuthor().getId().equals("118208118629990403"))) return;
         if(content.startsWith("<")) {
-            doCommand();
+            doCommand(channel, content, msgID);
         }
     }
 
-    public void doCommand(){
+    public void doCommand(MessageChannel channel, String content, long msgID){
             channel.deleteMessageById(msgID).queue();
 
             if(content.equals("<emotelist")){
@@ -53,10 +53,10 @@ public class MyListener extends ListenerAdapter{
                 }
             }
             if(content.contains(",")) {
-                sendMultipleImages();
+                sendMultipleImages(channel,content);
             }
             if(content.contains("gif:")){
-                sendGif();
+                sendGif(channel,content);
             }
             if(new File("res\\" + content.substring(1, content.length()).toLowerCase()+".png").exists()) {
 
@@ -66,7 +66,7 @@ public class MyListener extends ListenerAdapter{
             }
     }
 
-    public void sendGif(){
+    public void sendGif(MessageChannel channel, String content){
         if(new File("res\\" + content.substring(5, content.length()).toLowerCase()+".gif").exists()) {
 
             channel.sendFile(new File("res\\" + content.substring(5, content.length()).toLowerCase() + ".gif"), null).queue();
@@ -75,7 +75,7 @@ public class MyListener extends ListenerAdapter{
         }
     }
 
-    public void sendMultipleImages(){
+    public void sendMultipleImages(MessageChannel channel,String content){
 
             int numcomma=0;
             for(int i=0;i<content.length();i++){
