@@ -137,29 +137,40 @@ public class MyListener extends ListenerAdapter{
     public void checkLogFile(Message m, MessageChannel c){
         LocalDate dateNow = LocalDate.now();
         String filePath = "";
+        String folderPath = "";
         if(m.getChannelType()== ChannelType.PRIVATE){
             filePath = "Logs\\"+m.getPrivateChannel().getName()+"\\"+dateFormat.format(dateNow)+".txt";
+            folderPath = "Logs\\"+m.getPrivateChannel().getName();
         }else if(m.getChannelType()==ChannelType.GROUP){
             if(m.getGroup().getName()==null){
                 filePath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")\\"+dateFormat.format(dateNow)+".txt";
+                folderPath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")";
             }else {
                 filePath = "Logs\\" +c.getName() + "\\" + dateFormat.format(dateNow) + ".txt";
+                folderPath = "Logs\\" +c.getName();
             }
         }else if(m.getChannelType()==ChannelType.TEXT){
             filePath = "Logs\\"+m.getGuild().getName()+"\\"+c.getName()+"\\"+dateFormat.format(dateNow)+".txt";
+            folderPath = "Logs\\"+m.getGuild().getName()+"\\"+c.getName();
         }else{
             System.out.println("SelfBot Machine Broke");
         }
 
         if(!new File(filePath).exists()){
             try{
-                if(new File(filePath).createNewFile()){
+                if(new File(folderPath).mkdirs()){
+                    System.out.println("Successfully created file hierarchy: "+folderPath);
+                     if(new File(filePath).createNewFile()){
                     System.out.println("Successfully created log file: "+filePath);
-                }else{
+                     }else{
                     System.out.println("Failed to create log file: "+filePath);
+                     }
+                }else{
+                    System.out.println("Failed to create file hierarchy: "+folderPath);
                 }
             }catch (IOException e){
                 e.printStackTrace();
+                System.out.println(filePath);
             }
         }
         try{
