@@ -34,9 +34,12 @@ public class MyListener extends ListenerAdapter{
         checkLogFile(message,channel);
 
         if(event.getAuthor().isBot() || !(event.getAuthor().getId().equals("118208118629990403"))) return;
+        if(content.startsWith("<")) {
+            doCommand();
+        }
+    }
 
-        if(content.startsWith("<")){
-
+    public void doCommand(){
             channel.deleteMessageById(msgID).queue();
 
             if(content.equals("<emotelist")){
@@ -49,43 +52,66 @@ public class MyListener extends ListenerAdapter{
                     e.printStackTrace();
                 }
             }
+            if(content.contains(",")) {
+                sendMultipleImages();
+            }
+            if(content.contains("gif:")){
+                sendGif();
+            }
+            if(new File("res\\" + content.substring(1, content.length()).toLowerCase()+".png").exists()) {
 
-            if(content.contains(",")){
-                int numcomma=0;
-                for(int i=0;i<content.length();i++){
-                    if(content.charAt(i)==',') numcomma++;
+                channel.sendFile(new File("res\\" + content.substring(1, content.length()).toLowerCase() + ".png"), null).queue();
+                channel.sendMessage("```IOException error, check console for more information```");
+
+            }
+    }
+
+    public void sendGif(){
+        if(new File("res\\" + content.substring(5, content.length()).toLowerCase()+".gif").exists()) {
+
+            channel.sendFile(new File("res\\" + content.substring(5, content.length()).toLowerCase() + ".gif"), null).queue();
+            channel.sendMessage("```IOException error, check console for more information```");
+
+        }
+    }
+
+    public void sendMultipleImages(){
+
+            int numcomma=0;
+            for(int i=0;i<content.length();i++){
+                if(content.charAt(i)==',') numcomma++;
+            }
+            String[] emotes = new String[numcomma+1];
+            for (int i=0;i<emotes.length;i++){
+                emotes[i]="";
+            }
+            int count=0;
+            for(int i=1;i<content.length();i++){
+                if(content.charAt(i)==','){
+                    count++;
+                }else{
+                    emotes[count]+=content.charAt(i);
                 }
-                String[] emotes = new String[numcomma+1];
-                for (int i=0;i<emotes.length;i++){
-                    emotes[i]="";
-                }
-                int count=0;
-                for(int i=1;i<content.length();i++){
-                    if(content.charAt(i)==','){
-                        count++;
-                    }else{
-                        emotes[count]+=content.charAt(i);
+            }
+            boolean valid = true;
+            int width=0;
+            int height=0;
+            for(int i=0;i<emotes.length;i++){
+                if( !(new File("res\\" + emotes[i].toLowerCase()+".png").exists())){
+                    valid=false;
+                    channel.sendMessage("Image "+"res\\" + emotes[i].toLowerCase()+".png"+" doesnt exist").queue();
+                }else{
+                    BufferedImage temp;
+                    try {
+                        temp = ImageIO.read(new File("res\\" + emotes[i].toLowerCase() + ".png"));
+                        width+= temp.getWidth();
+                        if(height<temp.getHeight()) height=temp.getHeight();
+                    }catch (IOException e){
+                        e.printStackTrace();
                     }
                 }
-                boolean valid = true;
-                int width=0;
-                int height=0;
-                for(int i=0;i<emotes.length;i++){
-                    if( !(new File("res\\" + emotes[i].toLowerCase()+".png").exists())){
-                        valid=false;
-                        channel.sendMessage("Image "+"res\\" + emotes[i].toLowerCase()+".png"+" doesnt exist").queue();
-                    }else{
-                        BufferedImage temp;
-                        try {
-                            temp = ImageIO.read(new File("res\\" + emotes[i].toLowerCase() + ".png"));
-                            width+= temp.getWidth();
-                            if(height<temp.getHeight()) height=temp.getHeight();
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if(valid){
+            }
+            if(valid){
                 MsgImg = new BufferedImage(width,height,BufferedImage.TYPE_4BYTE_ABGR);
                 mG = MsgImg.createGraphics();
                 int dwidth = 0;
@@ -97,23 +123,14 @@ public class MyListener extends ListenerAdapter{
                         e.printStackTrace();
                     }
                 }
-                    try {
-                        ByteArrayOutputStream os = new ByteArrayOutputStream();
-                        ImageIO.write(MsgImg,"png",os);
-                        channel.sendFile(os.toByteArray(), "Emote.png",null).queue();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }else return;
-            }
-
-            if(new File("res\\" + content.substring(1, content.length()).toLowerCase()+".png").exists()) {
-
-                    channel.sendFile(new File("res\\" + content.substring(1, content.length()).toLowerCase() + ".png"), null).queue();
-                        channel.sendMessage("```IOException error, check console for more information```");
-
-            }
-        }
+                try {
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    ImageIO.write(MsgImg,"png",os);
+                    channel.sendFile(os.toByteArray(), "Emote.png",null).queue();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else return;
 
     }
 
@@ -121,15 +138,15 @@ public class MyListener extends ListenerAdapter{
         LocalDate dateNow = LocalDate.now();
         String filePath = "";
         if(m.getChannelType()== ChannelType.PRIVATE){
-            filePath = "Logs\\"+m.getPrivateChannel().getName()+"-"+dateFormat.format(dateNow)+".txt";
+            filePath = "Logs\\"+m.getPrivateChannel().getName()+"\\"+dateFormat.format(dateNow)+".txt";
         }else if(m.getChannelType()==ChannelType.GROUP){
             if(m.getGroup().getName()==null){
-                filePath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")-"+dateFormat.format(dateNow)+".txt";
+                filePath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")\\"+dateFormat.format(dateNow)+".txt";
             }else {
-                filePath = "Logs\\" +c.getName() + "-" + dateFormat.format(dateNow) + ".txt";
+                filePath = "Logs\\" +c.getName() + "\\" + dateFormat.format(dateNow) + ".txt";
             }
         }else if(m.getChannelType()==ChannelType.TEXT){
-            filePath = "Logs\\"+m.getGuild().getName()+"_"+c.getName()+"-"+dateFormat.format(dateNow)+".txt";
+            filePath = "Logs\\"+m.getGuild().getName()+"\\"+c.getName()+"\\"+dateFormat.format(dateNow)+".txt";
         }else{
             System.out.println("SelfBot Machine Broke");
         }
