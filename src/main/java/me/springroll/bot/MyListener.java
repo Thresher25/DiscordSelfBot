@@ -156,23 +156,26 @@ public class MyListener extends ListenerAdapter{
             System.out.println("SelfBot Machine Broke");
         }
 
-        if(!new File(filePath).exists()){
-            try{
-                if(new File(folderPath).mkdirs()){
-                    System.out.println("Successfully created file hierarchy: "+folderPath);
-                     if(new File(filePath).createNewFile()){
-                    System.out.println("Successfully created log file: "+filePath);
-                     }else{
-                    System.out.println("Failed to create log file: "+filePath);
-                     }
-                }else{
-                    System.out.println("Failed to create file hierarchy: "+folderPath);
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-                System.out.println(filePath);
+        if(!new File(folderPath).exists()) {
+            if (new File(folderPath).mkdirs()) {
+                System.out.println("Successfully created file hierarchy: " + folderPath);
+            } else {
+                System.out.println("Failed to create file hierarchy: " + folderPath);
             }
         }
+            if (!new File(filePath).exists()) {
+                try {
+                        if (new File(filePath).createNewFile()) {
+                            System.out.println("Successfully created log file: " + filePath);
+                        } else {
+                            System.out.println("Failed to create log file: " + filePath);
+                        }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println(filePath);
+                }
+            }
         try{
             PrintWriter FWriter = new PrintWriter(new FileWriter(filePath,true));
             FWriter.println(m.getAuthor().toString().substring(2)+": "+m.getCreationTime().toString().substring(0,10)+" "+m.getCreationTime().toString().substring(10)+": \""+m.getContent()+"\"");
