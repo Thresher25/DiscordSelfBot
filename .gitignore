@@ -51,5 +51,5 @@ fabric.properties
 
 build/classes/main/me/springroll/bot/Bot.class
 src/main/java/me/springroll/bot/Bot.java
-DiscordBot/build/libs/Logs/
-DiscordBot/build/libs/SelfBot.jar
+build/libs/Logs/
+build/libs/SelfBot.jar
