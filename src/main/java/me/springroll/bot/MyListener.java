@@ -22,7 +22,7 @@ public class MyListener extends ListenerAdapter{
 
     public static BufferedImage MsgImg;
     public static Graphics2D mG;
-    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd/");
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){
@@ -135,26 +135,27 @@ public class MyListener extends ListenerAdapter{
     }
 
     public void checkLogFile(Message m, MessageChannel c){
-        LocalDate dateNow = LocalDate.now();
-        String filePath = "";
-        String folderPath = "";
+        String dateString = dateFormat.format(LocalDate.now());
+        String pS = File.separator;
+        String basePath = "Logs"+pS;
+        String folderPath = basePath;
+        String chName = "";
         if(m.getChannelType()== ChannelType.PRIVATE){
-            filePath = "Logs\\"+m.getPrivateChannel().getName()+"\\"+dateFormat.format(dateNow)+".txt";
-            folderPath = "Logs\\"+m.getPrivateChannel().getName();
+            chName = m.getPrivateChannel().getName();
+            folderPath += m.getPrivateChannel().getName()+pS+;
         }else if(m.getChannelType()==ChannelType.GROUP){
             if(m.getGroup().getName()==null){
-                filePath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")\\"+dateFormat.format(dateNow)+".txt";
-                folderPath = "Logs\\"+"GroupID-("+m.getGroup().getId()+")";
+                folderPath += "GroupID-("+m.getGroup().getId()+")";
             }else {
-                filePath = "Logs\\" +c.getName() + "\\" + dateFormat.format(dateNow) + ".txt";
-                folderPath = "Logs\\" +c.getName();
+                folderPath += c.getName();
             }
         }else if(m.getChannelType()==ChannelType.TEXT){
-            filePath = "Logs\\"+m.getGuild().getName()+"\\"+c.getName()+"\\"+dateFormat.format(dateNow)+".txt";
-            folderPath = "Logs\\"+m.getGuild().getName()+"\\"+c.getName();
+            folderPath += m.getGuild().getName()+"\\"+c.getName();
         }else{
             System.out.println("SelfBot Machine Broke");
         }
+        folderPath += dateString;
+        String filePath = basePath+pS+"log.txt";
 
         if(!new File(folderPath).exists()) {
             if (new File(folderPath).mkdirs()) {
