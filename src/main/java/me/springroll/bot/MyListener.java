@@ -139,10 +139,8 @@ public class MyListener extends ListenerAdapter{
         String pS = File.separator;
         String basePath = "Logs"+pS;
         String folderPath = basePath;
-        String chName = "";
         if(m.getChannelType()== ChannelType.PRIVATE){
-            chName = m.getPrivateChannel().getName();
-            folderPath += m.getPrivateChannel().getName()+pS+;
+            folderPath += m.getPrivateChannel().getName()+pS;
         }else if(m.getChannelType()==ChannelType.GROUP){
             if(m.getGroup().getName()==null){
                 folderPath += "GroupID-("+m.getGroup().getId()+")";
@@ -155,7 +153,7 @@ public class MyListener extends ListenerAdapter{
             System.out.println("SelfBot Machine Broke");
         }
         folderPath += dateString;
-        String filePath = basePath+pS+"log.txt";
+        String filePath = folderPath+"log.txt";
 
         if(!new File(folderPath).exists()) {
             if (new File(folderPath).mkdirs()) {
